@@ -1,1 +1,115 @@
-<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>WWW Qualitätszentrale</title><style>body{max-width:850px;margin:auto;padding:24px;background:#f7faf7;color:#10221b;font:16px system-ui}h1{margin:0}.sub{color:#617169}.stats,.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:#fff;border:1px solid #dce8df;border-radius:16px;padding:15px;margin:10px 0}.n{font-size:28px;font-weight:900}.green{color:#168a4e}.yellow{color:#9a6800}.red{color:#b62f2f}button{border:0;border-radius:10px;padding:9px;background:#eaf5ed;color:#20553a;font-weight:800;cursor:pointer}table{width:100%;border-collapse:collapse;background:#fff}td,th{padding:11px;border-bottom:1px solid #dce8df;text-align:left}.tag{border-radius:99px;padding:4px 8px;font-size:12px;font-weight:800;background:#e8f7ed;color:#157443}@media(max-width:600px){.stats,.grid{grid-template-columns:1fr 1fr}table{font-size:13px}}</style><h1>WWW Qualitätszentrale</h1><p class='sub'>Lokale Beta-Testdaten · keine Live-Quellen · keine Datenübernahme</p><section class='stats'><div class='card'><div class='n green'>5</div>Quellen aktiv</div><div class='card'><div class='n green'>92%</div>Link-Qualität</div><div class='card'><div class='n yellow'>3</div>Prüfungen offen</div><div class='card'><div class='n red'>1</div>Dublette</div></section><section class='card'><h2>Quellenstatus</h2><table><tr><th>Quelle</th><th>Status</th><th>Qualität</th><th>Aktion</th></tr><tr><td>WWW Testdaten</td><td><span class='tag'>VERIFIED</span></td><td class='green'>96%</td><td><button onclick='note("Quelle geprüft")'>Prüfen</button></td></tr><tr><td>eBay Direktlink</td><td><span class='tag'>PILOT</span></td><td class='green'>89%</td><td><button onclick='note("API-Prüfung vorgemerkt")'>Prüfen</button></td></tr><tr><td>Google Zielseiten</td><td><span class='tag'>PILOT</span></td><td class='yellow'>76%</td><td><button onclick='note("Linkcheck vorgemerkt")'>Prüfen</button></td></tr><tr><td>Meta / Facebook</td><td><span class='tag'>RESTRICTED</span></td><td>–</td><td><button onclick='note("Keine Datenübernahme erlaubt")'>Info</button></td></tr></table></section><section class='grid'><div class='card'><h3>Link-Wächter</h3><p>Erreichbar: 92%<br>Prüfen: 6%<br>Defekt: 2%</p></div><div class='card'><h3>Frische</h3><p class='green'>Aktuell: 74%</p><p class='yellow'>Älter: 21%</p><p class='red'>Abgelaufen: 5%</p></div><div class='card'><h3>Feedback</h3><p>Passt: 18<br>Unpassend: 4<br>Link kaputt: 2</p></div><div class='card'><h3>Regel</h3><p>Rote Treffer werden nicht als Top-Ergebnis gezeigt.</p></div></section><p id='msg' class='sub'>Diese Ansicht ist ein lokaler Qualitätsprototyp.</p><script>function note(x){document.querySelector('#msg').textContent=x+' · in dieser Beta nur lokal protokolliert.'}</script>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WWW Qualitätszentrale · lokale Beta</title>
+  <meta name="description" content="Lokale Qualitätszentrale der WWW-Beta mit ausschließlich vorbereiteten Testdaten.">
+  <style>
+    :root{--bg:#071a14;--panel:#f7faf8;--card:#fff;--text:#10231d;--muted:#536962;--line:#d9e5de;--green:#086b43;--green-bg:#e2f5eb;--yellow:#704d00;--yellow-bg:#fff2cb;--red:#8e2732;--red-bg:#fde7e9;--ink:#09251b;--focus:#1769aa;--shadow:0 18px 42px rgba(3,20,16,.18)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#051811,#0a1d18);color:var(--text);font:16px/1.45 Inter,"Segoe UI",sans-serif}.shell{max-width:1060px;margin:auto;padding:24px 18px 52px}.site-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.brand{font-size:3.2rem;line-height:.9;font-weight:900;letter-spacing:-.1em;color:#2ef0a1}.brand-sub{display:block;margin-top:8px;color:#d9eee4;font-size:.75rem;letter-spacing:.2em}.back{display:inline-flex;min-height:44px;align-items:center;border:1px solid #ffffff44;border-radius:12px;padding:9px 14px;color:#fff;text-decoration:none}.panel{background:var(--panel);border-radius:24px;padding:20px;box-shadow:var(--shadow)}h1{margin:7px 0;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.1}h2{margin:0 0 12px;font-size:1.35rem}.eyebrow{color:var(--green);font-size:.76rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.intro{margin:0;color:var(--muted);max-width:780px}.explanation{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}.definition{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;font-size:.82rem}.definition strong{display:block}.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:20px 0}.filters label{display:grid;gap:6px;font-weight:700}select{min-height:44px;padding:9px 11px;border:1px solid #b8ccc0;border-radius:10px;background:#fff;color:var(--text)}button{min-height:44px;border:1px solid #b8ccc0;border-radius:10px;padding:9px 13px;background:#fff;color:var(--text);font-weight:700;cursor:pointer}button:hover{background:#eef7f1}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 18px}.metric{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}.metric strong{display:block;font-size:1.55rem}.metric small{color:var(--muted)}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}table{width:100%;border-collapse:collapse;min-width:900px}caption{text-align:left;padding:12px;font-weight:700}th,td{padding:12px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{font-size:.82rem;background:#f0f6f2}td small{display:block;color:var(--muted);margin-top:3px}.badge{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:4px 9px;font-size:.76rem;font-weight:800;white-space:nowrap}.verified,.green{color:var(--green);background:var(--green-bg)}.pilot,.yellow{color:var(--yellow);background:var(--yellow-bg)}.restricted,.paused,.blocked,.red{color:var(--red);background:var(--red-bg)}.blocked{background:#263832;color:#fff}.cards{display:none}.source-card{border:1px solid var(--line);border-radius:17px;padding:15px;background:#fff}.source-card h3{margin:0 0 4px;font-size:1.08rem}.source-card p{margin:0;color:var(--muted);font-size:.9rem}.card-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}.card-field{padding:8px;border-radius:10px;background:#f2f7f3;font-size:.8rem}.card-field strong{display:block;font-size:.86rem;color:var(--text)}.card-actions{display:flex;flex-wrap:wrap;gap:8px}.primary{background:var(--ink);border-color:var(--ink);color:#fff}.feedback-title{font-size:.8rem;font-weight:800;margin:12px 0 6px}.feedback button{font-size:.78rem;padding:7px 9px}.feedback button.active{background:var(--green-bg);border-color:#79bf98}.notice,.state{margin-top:16px;padding:14px 16px;border-radius:14px;background:#edf5f0;color:var(--muted)}.state h3{margin:0 0 4px;color:var(--text);font-size:1rem}.state.error{background:var(--red-bg);color:var(--red)}.live{min-height:24px;margin:10px 0;color:var(--green);font-weight:700}.danger{border-color:#c98188;color:var(--red)}.hidden{display:none!important}@media(max-width:639px){.shell{padding:18px 12px 40px}.site-header{flex-direction:column}.explanation{grid-template-columns:1fr 1fr}.table-wrap{display:none}.cards{display:grid;gap:12px}.summary{grid-template-columns:1fr}.panel{padding:16px}.filters label{width:100%}.filters select,.filters button{width:100%}.card-fields{grid-template-columns:1fr 1fr}}@media(min-width:640px){.cards{display:none!important}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="site-header">
+      <div><div class="brand" aria-label="WWW">WWW</div><span class="brand-sub">WER · WIE · WAS</span></div>
+      <nav aria-label="Seitennavigation"><a class="back" href="index.html">Zur WWW-Suche</a></nav>
+    </header>
+
+    <main class="panel">
+      <header>
+        <div class="eyebrow">Beta · lokale Testdaten</div>
+        <h1>Qualitätszentrale</h1>
+        <p class="intro">WWW Qualitätszentrale – lokale Beta-Testdaten. Keine Live-Quellen, keine Datenübernahme und keine automatische Linkprüfung. Alle Werte auf dieser Seite sind vorbereitete Beispiele und werden nicht von externen Plattformen abgerufen.</p>
+      </header>
+
+      <section aria-labelledby="status-heading">
+        <h2 id="status-heading">Quellenstatus verständlich erklärt</h2>
+        <div class="explanation">
+          <div class="definition"><strong>VERIFIED</strong> Nutzung, Herkunft und Pflegeweg sind dokumentiert.</div>
+          <div class="definition"><strong>PILOT</strong> Kontrollierter Testbetrieb ohne vollständige Abdeckung.</div>
+          <div class="definition"><strong>RESTRICTED</strong> Keine Datenübernahme; nur eingeschränkt oder nicht nutzbar.</div>
+          <div class="definition"><strong>PAUSED</strong> Vorübergehend nicht angezeigt, bis Qualität oder Berechtigung geklärt ist.</div>
+          <div class="definition"><strong>BLOCKED</strong> Darf für WWW nicht verwendet werden.</div>
+        </div>
+      </section>
+
+      <section aria-labelledby="controls-heading">
+        <h2 id="controls-heading">Lokale Qualitätsansicht</h2>
+        <div class="filters">
+          <label for="statusFilter">Quellenstatus
+            <select id="statusFilter"><option value="all">Alle Status</option><option>VERIFIED</option><option>PILOT</option><option>RESTRICTED</option><option>PAUSED</option><option>BLOCKED</option></select>
+          </label>
+          <label for="qualityFilter">Qualitätsampel
+            <select id="qualityFilter"><option value="all">Alle Farben</option><option value="green">Grün</option><option value="yellow">Gelb</option><option value="red">Rot</option></select>
+          </label>
+          <button id="resetView" type="button">Filter zurücksetzen</button>
+          <button id="simulateEmpty" type="button">Leeren Zustand testen</button>
+          <button id="simulateError" type="button">Fehlerzustand testen</button>
+        </div>
+        <div id="liveMessage" class="live" role="status" aria-live="polite"></div>
+        <div id="summary" class="summary" aria-live="polite"></div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Lokale Testquellen – keine Live-Prüfung</caption>
+            <thead><tr><th scope="col">Quelle / Abdeckung</th><th scope="col">Status</th><th scope="col">Qualität</th><th scope="col">Link / Aktualität</th><th scope="col">Dubletten</th><th scope="col">Letzte lokale Prüfung</th><th scope="col">Aktion</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div id="cards" class="cards"></div>
+        <div id="emptyState" class="state hidden"><h3>Noch keine lokalen Testquellen vorhanden.</h3><div>WWW zeigt erst Quellen, wenn Status, Nutzung und Qualität dokumentiert sind.</div></div>
+        <div id="errorState" class="state error hidden"><h3>Die lokalen Qualitätsdaten konnten nicht geladen werden.</h3><button id="reloadLocal" type="button">Lokale Beta erneut laden</button></div>
+      </section>
+
+      <section aria-labelledby="feedback-heading" class="notice">
+        <h2 id="feedback-heading">Lokales Testfeedback</h2>
+        <p>Feedback wird in dieser Beta nur lokal auf diesem Gerät gespeichert. Es gibt keine Übertragung an einen Server, kein Tracking und keine Datenübernahme.</p>
+        <div id="feedbackSummary" aria-live="polite"></div>
+        <button id="clearFeedback" class="danger" type="button">Lokales Testfeedback löschen</button>
+      </section>
+    </main>
+  </div>
+
+<script>
+'use strict';
+const DATA_KEY='www-quality-data-v1';
+const FEEDBACK_KEY='www-quality-feedback-v1';
+const sources=[
+ {id:'www',name:'WWW eigene Testdaten',coverage:'Lokale Beta-Beispiele',status:'VERIFIED',quality:96,qualityLevel:'green',link:'erreichbar',freshness:'aktuell',checked:'18.09.2026, lokal vorbereitet',duplicate:'niedrig',usage:'eigene Testdaten'},
+ {id:'ebay',name:'eBay Direktlink-Beispiel',coverage:'Nur sichtbarer Direktlink',status:'PILOT',quality:78,qualityLevel:'yellow',link:'prüfen',freshness:'älter',checked:'Noch nicht lokal geprüft',duplicate:'mittel',usage:'Direktlink'},
+ {id:'google',name:'Google Zielseiten-Beispiel',coverage:'Nur erlaubte Zielseite als Beispiel',status:'PILOT',quality:70,qualityLevel:'yellow',link:'prüfen',freshness:'älter',checked:'Noch nicht lokal geprüft',duplicate:'mittel',usage:'spätere API-Prüfung'},
+ {id:'meta',name:'Meta / Facebook Beispiel',coverage:'Keine Datenübernahme',status:'RESTRICTED',quality:0,qualityLevel:'red',link:'prüfen',freshness:'abgelaufen',checked:'18.09.2026, lokal vorbereitet',duplicate:'hoch',usage:'nicht verwendbar'},
+ {id:'paused',name:'Pausierter Test-Feed',coverage:'Vorübergehend ausgeblendet',status:'PAUSED',quality:42,qualityLevel:'red',link:'defekt',freshness:'abgelaufen',checked:'18.09.2026, lokal vorbereitet',duplicate:'hoch',usage:'nicht verwendbar'},
+ {id:'blocked',name:'Gesperrte Quelle als Beispiel',coverage:'Darf nicht verwendet werden',status:'BLOCKED',quality:0,qualityLevel:'red',link:'defekt',freshness:'abgelaufen',checked:'18.09.2026, lokal vorbereitet',duplicate:'hoch',usage:'nicht verwendbar'}
+];
+const $=id=>document.getElementById(id);
+let feedback={};let checks={};let forcedState='normal';
+function readLocal(){try{feedback=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'{}');checks=JSON.parse(localStorage.getItem(DATA_KEY)||'{}');return true}catch(e){return false}}
+function saveLocal(){try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(feedback));localStorage.setItem(DATA_KEY,JSON.stringify(checks));return true}catch(e){return false}}
+function qualityClass(level){return level==='green'?'green':level==='yellow'?'yellow':'red'}
+function statusClass(status){return status.toLowerCase()}
+function qualityLabel(level){return level==='green'?'grün':level==='yellow'?'gelb':'rot'}
+function displayedSources(){return sources.filter(s=>($('statusFilter').value==='all'||s.status===$('statusFilter').value)&&($('qualityFilter').value==='all'||s.qualityLevel===$('qualityFilter').value))}
+function feedbackCounts(){const values=Object.values(feedback);return {passt:values.filter(v=>v==='Passt').length,unpassend:values.filter(v=>v==='Unpassend').length,kaputt:values.filter(v=>v==='Link kaputt').length,problem:values.filter(v=>v==='Problem melden').length}}
+function sourceFeedback(id){return feedback[id]||''}
+function checkText(s){return s.status==='VERIFIED'?'Lokaler Teststatus bestätigt.':s.status==='PILOT'?'Manuelle Prüfung vorgemerkt.':s.status==='RESTRICTED'?'Quelle bleibt eingeschränkt.':s.status==='PAUSED'?'Quelle bleibt pausiert.':'Quelle ist für WWW gesperrt.'}
+function checkSource(id){const s=sources.find(x=>x.id===id);if(!s)return;const message=$('liveMessage');message.textContent='Lokale Testprüfung läuft …';document.querySelectorAll('[data-check]').forEach(b=>b.disabled=true);setTimeout(()=>{checks[id]=new Date().toLocaleString('de-DE')+' (lokal)';saveLocal();message.textContent=checkText(s);document.querySelectorAll('[data-check]').forEach(b=>b.disabled=false);render()},350)}
+function feedbackFor(id,value){feedback[id]=value;saveLocal();$('liveMessage').textContent='Lokales Testfeedback gespeichert: '+value+'.';render()}
+function actionButtons(s){return `<button class="primary" type="button" data-check="${s.id}" aria-label="Lokale Testprüfung für ${s.name} starten">Lokal prüfen</button><div class="feedback-title">Lokales Feedback</div><div class="feedback" role="group" aria-label="Feedback für ${s.name}">${['Passt','Unpassend','Link kaputt','Problem melden'].map(v=>`<button type="button" class="${sourceFeedback(s.id)===v?'active':''}" data-feedback="${s.id}" data-value="${v}">${v}</button>`).join('')}</div>`}
+function row(s){const checked=checks[s.id]||s.checked;return `<tr><td><strong>${s.name}</strong><small>${s.coverage}</small></td><td><span class="badge ${statusClass(s.status)}">${s.status}</span></td><td><span class="badge ${qualityClass(s.qualityLevel)}">${s.quality}/100 · ${qualityLabel(s.qualityLevel)}</span></td><td><span class="badge">Link: ${s.link}</span><small>Aktualität: ${s.freshness}</small></td><td>${s.duplicate}</td><td>${checked}<small>Nutzung: ${s.usage}</small></td><td>${actionButtons(s)}</td></tr>`}
+function card(s){const checked=checks[s.id]||s.checked;return `<article class="source-card"><h3>${s.name}</h3><p>${s.coverage}</p><div class="card-fields"><div class="card-field"><strong>Status</strong><span class="badge ${statusClass(s.status)}">${s.status}</span></div><div class="card-field"><strong>Qualität</strong><span class="badge ${qualityClass(s.qualityLevel)}">${s.quality}/100 · ${qualityLabel(s.qualityLevel)}</span></div><div class="card-field"><strong>Linkstatus</strong>${s.link}</div><div class="card-field"><strong>Aktualität</strong>${s.freshness}</div><div class="card-field"><strong>Dublettenrisiko</strong>${s.duplicate}</div><div class="card-field"><strong>Erlaubte Nutzung</strong>${s.usage}</div></div><p><strong>Letzte lokale Prüfung:</strong> ${checked}</p><div class="card-actions">${actionButtons(s)}</div></article>`}
+function render(){
+ if(forcedState==='error'){$('tableBody').innerHTML='';$('cards').innerHTML='';$('summary').innerHTML='';$('errorState').classList.remove('hidden');$('emptyState').classList.add('hidden');return}
+ $('errorState').classList.add('hidden');const list=forcedState==='empty'?[]:displayedSources();
+ const open=list.filter(s=>s.link!=='erreichbar'||s.freshness!=='aktuell').length;const counts=feedbackCounts();
+ $('summary').innerHTML=`<div class="metric"><strong>${list.length}</strong><small>lokale Testquellen in Ansicht</small></div><div class="metric"><strong>${list.filter(s=>s.qualityLevel==='green').length}</strong><small>Qualitätsampel grün</small></div><div class="metric"><strong>${open}</strong><small>${open?'lokale Prüfungen offen':'keine offenen Prüfungen'}</small></div>`;
+ $('tableBody').innerHTML=list.map(row).join('');$('cards').innerHTML=list.map(card).join('');$('emptyState').classList.toggle('hidden',list.length!==0);
+ $('feedbackSummary').innerHTML=`<p><strong>Lokale Zähler:</strong> Passt ${counts.passt} · Unpassend ${counts.unpassend} · Link kaputt ${counts.kaputt} · Problem melden ${counts.problem}</p>`;
+ document.querySelectorAll('[data-check]').forEach(b=>b.addEventListener('click',()=>checkSource(b.dataset.check)));document.querySelectorAll('[data-feedback]').forEach(b=>b.addEventListener('click',()=>feedbackFor(b.dataset.feedback,b.dataset.value)));
+}
+$('statusFilter').addEventListener('change',()=>{forcedState='normal';render()});$('qualityFilter').addEventListener('change',()=>{forcedState='normal';render()});$('resetView').addEventListener('click',()=>{$('statusFilter').value='all';$('qualityFilter').value='all';forcedState='normal';render()});$('simulateEmpty').addEventListener('click',()=>{forcedState='empty';render()});$('simulateError').addEventListener('click',()=>{forcedState='error';render()});$('reloadLocal').addEventListener('click',()=>{forcedState='normal';if(!readLocal()){$('liveMessage').textContent='Lokale Testdaten konnten nicht gelesen werden.'}else{$('liveMessage').textContent='Lokale Beta erneut geladen.'}render()});$('clearFeedback').addEventListener('click',()=>{if(window.confirm('Lokales Testfeedback wirklich von diesem Gerät löschen?')){feedback={};saveLocal();$('liveMessage').textContent='Lokales Testfeedback wurde gelöscht.';render()}});readLocal();render();
+</script>
+</body>
+</html>
