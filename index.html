@@ -1,1 +1,837 @@
-<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>WWW</title><style>body{max-width:600px;margin:auto;padding:24px;background:#f7faf7;font:16px system-ui;color:#10221b}.w{text-align:center;font-size:72px;font-weight:900;letter-spacing:-11px}.w b{color:#20c970}h1{text-align:center}textarea,input,button,a{box-sizing:border-box;width:100%;padding:13px;margin:8px 0;border-radius:13px;font:inherit}textarea,input{border:1px solid #cbd8cf}button,a{border:0;background:#0a1712;color:white;text-align:center;text-decoration:none;font-weight:800}.r{background:white;border:1px solid #dce8df;border-radius:18px;padding:15px;margin:10px 0}.why{background:#eff8f1;padding:9px;border-radius:9px;font-size:13px}</style><div class='w'>W<b>W</b>W</div><h1>Weniger suchen.<br>Besser finden.</h1><p>WER · WIE · WAS</p><main id='a'><textarea id='q' placeholder='z. B. Fahrerjob Vollzeit ab sofort im Umkreis von 30 km um Augsburg'></textarea><input value='Augsburg'><button onclick='go()'>DIE BESTEN 3 FINDEN →</button></main><script>function go(){let q=document.querySelector('#q').value||'deine Anfrage',job=/job|fahrer|arbeit/i.test(q),x=job?[['Fahrer / Logistik (m/w/d)','https://www.arbeitsagentur.de/jobsuche/'],['Auslieferungsfahrer (m/w/d)','https://de.indeed.com/'],['Berufskraftfahrer (m/w/d)','https://www.stepstone.de/']]:[['Passendes Angebot in deiner Nähe','https://www.ebay.de/'],['Preis-Leistungs-Sieger','https://www.ebay.de/'],['Weitere passende Möglichkeit','https://www.google.com/search']];a.innerHTML='<h2>Deine besten 3</h2><p>'+q+'</p>'+x.map((v,i)=>`<section class=r><b>${i+1}. ${v[0]}</b><p>${94-i*5}% Match</p><div class=why>Warum passend: Relevanz, Nähe und Aktualität wurden berücksichtigt.</div><a target=_blank href=${v[1]}>DIREKT ZUR QUELLE ↗</a></section>`).join('')+'<small>WWW Beta · Testfälle · Keine gekauften Platzierungen</small>'}</script>
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WWW – WER · WIE · WAS</title>
+    <meta
+      name="description"
+      content="WWW hilft dabei, Angebot und Nachfrage in normaler Sprache zu verstehen und die drei passendsten, nachvollziehbaren Optionen zu zeigen."
+    />
+    <style>
+      :root {
+        --bg: #071a14;
+        --bg-soft: #0d241d;
+        --panel: #f5f8f6;
+        --panel-strong: #edf4ee;
+        --card: #ffffff;
+        --text: #10231d;
+        --muted: #536962;
+        --line: rgba(16, 35, 29, 0.1);
+        --primary: #2ef0a1;
+        --primary-strong: #1ecf89;
+        --primary-soft: rgba(46, 240, 161, 0.18);
+        --shadow: 0 14px 34px rgba(7, 26, 20, 0.16);
+        --radius: 22px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(46, 240, 161, 0.08), transparent 28%),
+          linear-gradient(180deg, #051811 0%, #0a1d18 100%);
+        color: var(--text);
+      }
+
+      a { color: inherit; }
+      button, input, select, textarea { font: inherit; }
+
+      .app-shell {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 18px 56px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .brand-mark {
+        font-size: clamp(2.5rem, 7vw, 4rem);
+        letter-spacing: -0.09em;
+        font-weight: 800;
+        line-height: 0.9;
+        color: var(--primary);
+      }
+
+      .brand-sub {
+        font-size: 0.84rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.8);
+      }
+
+      .beta-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 14px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.03);
+        color: rgba(255,255,255,0.8);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .panel {
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .mode-toggle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: rgba(10,29,24,0.06);
+        border: 1px solid rgba(16,35,29,0.08);
+        border-radius: 16px;
+        padding: 6px;
+        margin-bottom: 18px;
+      }
+
+      .mode {
+        border: 0;
+        border-radius: 12px;
+        background: transparent;
+        color: var(--muted);
+        font-weight: 700;
+        padding: 12px 18px;
+        cursor: pointer;
+        transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+      }
+
+      .mode.active {
+        background: var(--bg-soft);
+        color: white;
+        box-shadow: 0 8px 18px rgba(7,26,20,0.18);
+      }
+
+      .mode:hover,
+      .mode:focus-visible {
+        transform: translateY(-1px);
+      }
+
+      .search-panel {
+        padding: 22px;
+      }
+
+      .field-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      textarea, input, select {
+        width: 100%;
+        border: 1px solid rgba(16,35,29,0.14);
+        border-radius: 14px;
+        background: #f8faf8;
+        padding: 14px 16px;
+        color: var(--text);
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      textarea:focus,
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: rgba(30, 207, 137, 0.7);
+        box-shadow: 0 0 0 4px rgba(46, 240, 161, 0.15);
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .understanding {
+        margin-top: 18px;
+        background: linear-gradient(180deg, rgba(46,240,161,0.08), rgba(46,240,161,0.02));
+        border: 1px solid rgba(30, 207, 137, 0.2);
+        border-radius: 16px;
+        padding: 16px 18px;
+      }
+
+      .understanding h3 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+      }
+
+      .understanding p {
+        margin: 0;
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .feedback-btn,
+      .favorite-btn {
+        border: 0;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+      }
+
+      .primary-btn {
+        background: linear-gradient(180deg, var(--primary) 0%, var(--primary-strong) 100%);
+        color: #062c1f;
+        font-weight: 800;
+        padding: 14px 22px;
+        box-shadow: 0 10px 18px rgba(46, 240, 161, 0.23);
+      }
+
+      .secondary-btn {
+        background: #edf6f1;
+        color: var(--text);
+        font-weight: 700;
+        padding: 14px 22px;
+      }
+
+      .primary-btn:hover,
+      .secondary-btn:hover,
+      .feedback-btn:hover,
+      .favorite-btn:hover,
+      .primary-btn:focus-visible,
+      .secondary-btn:focus-visible,
+      .feedback-btn:focus-visible,
+      .favorite-btn:focus-visible {
+        transform: translateY(-1px);
+      }
+
+      .results-panel {
+        margin-top: 22px;
+        padding: 22px;
+      }
+
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .results-header h2 {
+        margin: 0;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+      }
+
+      .result-stack {
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        background: linear-gradient(180deg, #fff 0%, #f5f9f5 100%);
+        border: 1px solid rgba(16,35,29,0.08);
+        border-radius: 20px;
+        padding: 18px 18px 14px;
+        box-shadow: 0 8px 18px rgba(12, 22, 18, 0.04);
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 26px rgba(12, 22, 18, 0.06);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .rank-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 58px;
+        height: 36px;
+        background: var(--primary-soft);
+        color: #083a2a;
+        font-weight: 800;
+        border-radius: 999px;
+      }
+
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0 10px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(16,35,29,0.05);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+
+      .title {
+        margin: 0;
+        font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+      }
+
+      .source-line {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .match-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px solid var(--line);
+        font-weight: 700;
+      }
+
+      .why {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(10,29,24,0.04);
+        color: var(--text);
+      }
+
+      .why strong {
+        display: inline-block;
+        margin-bottom: 6px;
+      }
+
+      .actions-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+        align-items: center;
+      }
+
+      .favorite-btn, .feedback-btn {
+        border: 1px solid rgba(16,35,29,0.08);
+        background: white;
+        padding: 9px 12px;
+        font-weight: 700;
+      }
+
+      .feedback-btn[data-status="active"] {
+        background: rgba(46, 240, 161, 0.12);
+        border-color: rgba(46, 240, 161, 0.28);
+      }
+
+      .origin-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        min-width: 160px;
+        background: #0b241d;
+        color: white;
+        padding: 10px 14px;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .bottom-notes {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .note {
+        border-radius: 16px;
+        padding: 14px 16px;
+        border: 1px solid rgba(16,35,29,0.08);
+        background: rgba(10,29,24,0.02);
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .note strong {
+        display: block;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .field-grid,
+        .bottom-notes {
+          grid-template-columns: 1fr;
+        }
+
+        .search-panel,
+        .results-panel {
+          padding: 16px;
+        }
+
+        .results-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" aria-label="WWW Header">
+        <div class="brand">
+          <div class="brand-mark" aria-label="WWW">WWW</div>
+          <div class="brand-sub">WER · WIE · WAS</div>
+        </div>
+        <div class="beta-badge">Beta · lokale Testdaten</div>
+      </header>
+
+      <div class="mode-toggle" role="tablist" aria-label="Suchen oder Bieten">
+        <button class="mode active" type="button" data-mode="search" aria-selected="true">Ich suche</button>
+        <button class="mode" type="button" data-mode="offer" aria-selected="false">Ich biete</button>
+      </div>
+
+      <section class="panel search-panel" aria-labelledby="search-heading">
+        <div class="field-stack">
+          <div>
+            <label for="queryInput" id="search-heading">Was suchst du?</label>
+            <textarea id="queryInput" aria-label="Suchanfrage">Suche Fahrerjob Vollzeit ab sofort im Umkreis von 30 km um Augsburg.</textarea>
+          </div>
+
+          <div class="field-grid">
+            <div>
+              <label for="locationInput">Wo?</label>
+              <input id="locationInput" type="text" value="Augsburg" aria-label="Standort" />
+            </div>
+            <div>
+              <label for="radiusInput">Radius</label>
+              <select id="radiusInput" aria-label="Radius">
+                <option value="10">10 km</option>
+                <option value="20">20 km</option>
+                <option value="30" selected>30 km</option>
+                <option value="50">50 km</option>
+                <option value="100">100 km</option>
+              </select>
+            </div>
+            <div>
+              <label for="priorityInput">Priorität</label>
+              <select id="priorityInput" aria-label="Priorität">
+                <option value="best-overall" selected>Beste Gesamtwahl</option>
+                <option value="cheapest">Günstigster Preis</option>
+                <option value="nearest">Nächste Entfernung</option>
+                <option value="fastest">Schnell verfügbar</option>
+                <option value="best-quality">Höchste Qualität</option>
+                <option value="best-pay">Beste Bezahlung</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="understanding" aria-live="polite">
+          <h3>WWW hat verstanden</h3>
+          <p id="understandingText">Mobilität, Jobs, Standortsuche, Vollzeit, sofort verfügbar, Region Augsburg, Radius 30 km.</p>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-btn" id="analyzeBtn" type="button">Verstehen & bewerten</button>
+          <button class="secondary-btn" id="showBtn" type="button">Treffer zeigen</button>
+        </div>
+      </section>
+
+      <section class="panel results-panel" aria-labelledby="results-heading">
+        <div class="results-header">
+          <h2 id="results-heading">Top-3 passende Möglichkeiten</h2>
+        </div>
+        <div id="resultsList" class="result-stack" aria-live="polite"></div>
+      </section>
+
+      <div class="bottom-notes">
+        <div class="note">
+          <strong>Beta-Hinweis</strong>
+          Diese Oberfläche zeigt lokale Testdaten und echte Direktlinks. Sie ist kein Live-Markt, sondern eine öffentliche Beta für Nutzung, Validierung und Produktfeedback.
+        </div>
+        <div class="note">
+          <strong>Quellenhinweis</strong>
+          Jede Empfehlung zeigt die Originalquelle und die Begründung. Bezahlt oder gesponsertes Ranking ist nicht erlaubt; nur transparente, nutzernahe Passung zählt.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const STORAGE_KEYS = {
+        favorites: 'www-favorites',
+        feedback: 'www-feedback'
+      };
+
+      const sampleData = [
+        {
+          id: 'job-1',
+          kind: 'job',
+          title: 'Fahrer / Transportmitarbeiter (Vollzeit)',
+          source: 'regionaler Logistikdienst',
+          url: 'https://example.com/jobs/driver-augsburg',
+          location: 'Augsburg',
+          distanceKm: 8,
+          price: 2200,
+          availability: 'ab sofort',
+          quality: 'sehr gut',
+          trust: 'verifiziert',
+          match: 96,
+          tags: ['Vollzeit', 'ab sofort', 'Augsburg'],
+          why: 'Die Stelle passt sehr gut zu Vollzeit, sofortiger Verfügbarkeit und einem Standort nahe Augsburg.'
+        },
+        {
+          id: 'job-2',
+          kind: 'job',
+          title: 'Auslieferungsfahrer mit eigener Fahrpraxis',
+          source: 'Augsburger Kurier',
+          url: 'https://example.com/jobs/delivery-augsburg',
+          location: 'Augsburg',
+          distanceKm: 16,
+          price: 2100,
+          availability: 'in 2 Wochen',
+          quality: 'gut',
+          trust: 'pilot',
+          match: 89,
+          tags: ['Fahrpraxis', 'Vertrieb', 'nah', 'flexibel'],
+          why: 'Gut passend für Fahrleistung und Standort, leicht geringer wegen späterem Start.'
+        },
+        {
+          id: 'job-3',
+          kind: 'job',
+          title: 'Kundenbetreuung / Logistikkoordination',
+          source: 'Stadtservice Augsburg',
+          url: 'https://example.com/jobs/coord-augsburg',
+          location: 'Augsburg',
+          distanceKm: 22,
+          price: 2400,
+          availability: 'sofort',
+          quality: 'gut',
+          trust: 'verified',
+          match: 84,
+          tags: ['Koordination', 'sofort', 'Augsburg'],
+          why: 'Starke Relevanz für Verfügbarkeit und Standort, etwas weniger passend, da eher Koordination statt reines Fahren.'
+        },
+        {
+          id: 'offer-1',
+          kind: 'offer',
+          title: 'Kleine Werkstatt für Fahrzeugreparatur',
+          source: 'Lokalbetrieb in Augsburg',
+          url: 'https://example.com/offers/workshop-augsburg',
+          location: 'Augsburg',
+          distanceKm: 11,
+          price: 980,
+          availability: 'heute',
+          quality: 'sehr gut',
+          trust: 'verified',
+          match: 82,
+          tags: ['Werkstatt', 'Mobilität', 'lokal'],
+          why: 'Passend für lokale Nähe und aktuelle Verfügbarkeit, aber weniger passend zur Suchintention Job.'
+        }
+      ];
+
+      const state = {
+        currentMode: 'search',
+        favorites: JSON.parse(localStorage.getItem(STORAGE_KEYS.favorites) || '[]'),
+        feedback: JSON.parse(localStorage.getItem(STORAGE_KEYS.feedback) || '{}')
+      };
+
+      const queryInput = document.getElementById('queryInput');
+      const locationInput = document.getElementById('locationInput');
+      const radiusInput = document.getElementById('radiusInput');
+      const priorityInput = document.getElementById('priorityInput');
+      const understandingText = document.getElementById('understandingText');
+      const resultsList = document.getElementById('resultsList');
+      const modeButtons = document.querySelectorAll('.mode');
+
+      function saveStorage() {
+        localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(state.favorites));
+        localStorage.setItem(STORAGE_KEYS.feedback, JSON.stringify(state.feedback));
+      }
+
+      function parseQuery(raw, mode) {
+        const text = (raw || '').toLowerCase();
+        const location = (locationInput.value || '').trim();
+        const radius = Number(radiusInput.value || 30);
+        const priority = priorityInput.value;
+
+        const isJob = /job|stelle|fahrer|arbeit|mitarbeiter|bezahlung|gehalt|vollzeit|teilzeit|arbeitsplatz/i.test(text)
+          || mode === 'search';
+
+        const isOffer = /biete|verkaufe|anbiete|vermiete|angebot|dienstleistung|werkstatt|fahrzeug|möbel|wohnung/i.test(text)
+          || mode === 'offer';
+
+        const hasUrgent = /sofort|ab sofort|heute|morgen|direkt|umgehend|jetzt/i.test(text);
+        const hasBudget = /preis|budget|kosten|gehalt|lohn|max|bis|unter/i.test(text);
+        const locationText = location || 'lokal';
+
+        return {
+          mode,
+          query: raw.trim(),
+          location: locationText,
+          radius,
+          priority,
+          isJob,
+          isOffer,
+          hasUrgent,
+          hasBudget,
+          wantsFullTime: /vollzeit/i.test(text),
+          wantsPartTime: /teilzeit/i.test(text),
+          wantsQuality: /hochwertig|gut|qualitativ|top|sehr gut|zustand/i.test(text),
+          wantsNearest: /nah|in der nähe|umkreis|nahe|umgebung/i.test(text),
+          wantsLowCost: /günstig|billig|preiswert|kosten/i.test(text)
+        };
+      }
+
+      function buildUnderstanding(parsed) {
+        const bits = [];
+
+        bits.push(parsed.isJob ? 'Jobs / Arbeitsangebote' : 'Angebote / Dienstleistungen');
+        if (parsed.location) bits.push(`Standort: ${parsed.location}`);
+        if (parsed.radius) bits.push(`Radius: ${parsed.radius} km`);
+        if (parsed.wantsFullTime) bits.push('Vollzeit');
+        if (parsed.wantsPartTime) bits.push('Teilzeit');
+        if (parsed.hasUrgent) bits.push('sofort verfügbar');
+        if (parsed.hasBudget) bits.push('Preis / Budget berücksichtigt');
+        if (parsed.wantsNearest) bits.push('Nähe priorisiert');
+        if (parsed.wantsLowCost) bits.push('Preis priorisiert');
+
+        return bits.join(', ');
+      }
+
+      function calculateMatch(candidate, parsed) {
+        let score = 30;
+
+        if (parsed.isJob && candidate.kind === 'job') score += 25;
+        if (parsed.isOffer && candidate.kind === 'offer') score += 25;
+
+        if (parsed.location && candidate.location.toLowerCase().includes(parsed.location.toLowerCase())) score += 18;
+        score += Math.max(0, 20 - candidate.distanceKm / 2);
+
+        if (parsed.hasUrgent && /sofort|heute|ab sofort/.test(candidate.availability.toLowerCase())) score += 12;
+        if (parsed.wantsFullTime && candidate.tags.some(tag => /vollzeit/.test(tag.toLowerCase()))) score += 10;
+        if (parsed.wantsLowCost && candidate.price < 2000) score += 8;
+        if (parsed.wantsQuality && /sehr gut|gut/.test(candidate.quality.toLowerCase())) score += 7;
+        if (parsed.wantsNearest && candidate.distanceKm <= parsed.radius) score += 10;
+
+        switch (parsed.priority) {
+          case 'cheapest':
+            score += Math.max(0, 18 - candidate.price / 200);
+            break;
+          case 'nearest':
+            score += Math.max(0, 18 - candidate.distanceKm * 0.6);
+            break;
+          case 'fastest':
+            if (/sofort|heute/.test(candidate.availability.toLowerCase())) score += 20;
+            break;
+          case 'best-quality':
+            if (candidate.quality.toLowerCase().includes('sehr gut')) score += 18;
+            break;
+          case 'best-pay':
+            score += Math.min(20, candidate.price / 120);
+            break;
+          default:
+            score += 8;
+        }
+
+        score = Math.min(99, Math.max(60, Math.round(score)));
+        return score;
+      }
+
+      function rankCandidates(parsed) {
+        return [...sampleData]
+          .map(candidate => ({
+            ...candidate,
+            score: calculateMatch(candidate, parsed)
+          }))
+          .sort((a, b) => {
+            const diff = b.score - a.score;
+            if (diff !== 0) return diff;
+            return a.distanceKm - b.distanceKm;
+          })
+          .slice(0, 3);
+      }
+
+      function formatMoney(value) {
+        return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+      }
+
+      function getFavoriteState(id) {
+        return state.favorites.includes(id);
+      }
+
+      function renderResults() {
+        const parsed = parseQuery(queryInput.value, state.currentMode);
+        understandingText.textContent = buildUnderstanding(parsed);
+
+        const ranked = rankCandidates(parsed);
+
+        resultsList.innerHTML = ranked.map((item, index) => {
+          const isFav = getFavoriteState(item.id);
+          const feedback = state.feedback[item.id] || 'none';
+
+          return `
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="title">${index + 1}. ${item.title}</h3>
+                  <p class="source-line">Quelle: ${item.source}</p>
+                </div>
+                <div class="rank-pill">#${index + 1}</div>
+              </div>
+
+              <div class="meta-row">
+                <span class="chip">${item.location}</span>
+                <span class="chip">${item.distanceKm} km</span>
+                <span class="chip">${item.availability}</span>
+                <span class="chip">${item.quality}</span>
+              </div>
+
+              <div class="match-line">
+                <span>Match-Wert</span>
+                <span>${item.score}%</span>
+              </div>
+
+              <div class="why">
+                <strong>Warum passend?</strong>
+                <div>${item.why}</div>
+              </div>
+
+              <div class="actions-bottom">
+                <a class="origin-link" href="${item.url}" target="_blank" rel="noreferrer noopener">Direktlink</a>
+                <button class="favorite-btn" type="button" data-favorite-id="${item.id}" aria-label="Merken: ${item.title}">
+                  ${isFav ? 'Gemerkt' : 'Merken'}
+                </button>
+                <button class="feedback-btn ${feedback !== 'none' ? 'active' : ''}" type="button" data-feedback-id="${item.id}" data-feedback-value="pass" aria-label="Feedback: passend">
+                  ${feedback === 'pass' ? 'Passt' : 'Passt'}
+                </button>
+                <button class="feedback-btn ${feedback === 'reject' ? 'active' : ''}" type="button" data-feedback-id="${item.id}" data-feedback-value="reject" aria-label="Feedback: unpassend">
+                  ${feedback === 'reject' ? 'Unpassend' : 'Unpassend'}
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const id = button.getAttribute('data-favorite-id');
+            if (state.favorites.includes(id)) {
+              state.favorites = state.favorites.filter(item => item !== id);
+            } else {
+              state.favorites.push(id);
+            }
+            saveStorage();
+            renderResults();
+          });
+        });
+
+        document.querySelectorAll('.feedback-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const id = button.getAttribute('data-feedback-id');
+            const value = button.getAttribute('data-feedback-value');
+            state.feedback[id] = value;
+            saveStorage();
+            renderResults();
+          });
+        });
+      }
+
+      function setMode(mode) {
+        state.currentMode = mode;
+        modeButtons.forEach(button => {
+          const active = button.dataset.mode === mode;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-selected', String(active));
+        });
+
+        if (mode === 'offer') {
+          queryInput.value = 'Biete Fahrzeugreparatur, Werkstattservice und kurze Termine in der Region um Augsburg an.';
+          locationInput.value = 'Augsburg';
+          radiusInput.value = '30';
+        } else {
+          queryInput.value = 'Suche Fahrerjob Vollzeit ab sofort im Umkreis von 30 km um Augsburg.';
+          locationInput.value = 'Augsburg';
+          radiusInput.value = '30';
+        }
+
+        renderResults();
+      }
+
+      modeButtons.forEach(button => {
+        button.addEventListener('click', () => setMode(button.dataset.mode));
+      });
+
+      document.getElementById('analyzeBtn').addEventListener('click', renderResults);
+      document.getElementById('showBtn').addEventListener('click', renderResults);
+
+      queryInput.addEventListener('input', renderResults);
+      locationInput.addEventListener('input', renderResults);
+      radiusInput.addEventListener('change', renderResults);
+      priorityInput.addEventListener('change', renderResults);
+
+      renderResults();
+    </script>
+  </body>
+</html>
